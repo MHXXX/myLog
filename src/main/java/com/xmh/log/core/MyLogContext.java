@@ -2,6 +2,7 @@ package com.xmh.log.core;
 
 import sun.reflect.Reflection;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -20,10 +21,29 @@ public class MyLogContext {
     public static void put(String key, Object value) {
         LinkedHashMap<String, Map<String, Object>> map = THREAD_LOCAL.get();
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        map.
-
-
         Map<String, Object> paramMap = map.getOrDefault(methodName, new HashMap<>());
         paramMap.put(key, value);
+        map.put(methodName, paramMap);
+    }
+
+    public static Map<String, Object> getVariables() {
+        LinkedHashMap<String, Map<String, Object>> map = THREAD_LOCAL.get();
+        return removeTail();
+    }
+
+    private static Map<String, Object> removeTail() {
+        LinkedHashMap<String, Map<String, Object>> map = THREAD_LOCAL.get();
+        try {
+            Field tail = map.getClass().getDeclaredField("tail");
+            tail.setAccessible(true);
+            Map.Entry<String, Map<String, Object>> entry = (Map.Entry<String, Map<String, Object>>) tail.get(map);
+            if (entry != null) {
+                map.remove(entry.getKey());
+                return entry.getValue();
+            }
+
+        } catch (Exception ignore) {
+        }
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package com.xmh.log.record;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 /**
  * .
@@ -11,10 +12,16 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class LogData {
 
-    private String record;
     private boolean success;
-    private Object result;
-    private Throwable error;
+    private String record;
+    private String fail;
+    private String operator;
+    private Long timestamp;
+
+    public String getResult() {
+        return success ? record : fail;
+    }
 }
