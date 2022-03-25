@@ -14,13 +14,12 @@ import java.util.Map;
  * @create 2022/3/24 9:03 PM
  */
 public class MyLogFunctionFactory {
-    private Map<String, MyLogFunction> allFunctionMap;
+    private final Map<String, MyLogFunction> allFunctionMap = new HashMap<>();
 
     public MyLogFunctionFactory(List<MyLogFunction> parseFunctions) {
         if (CollectionUtils.isEmpty(parseFunctions)) {
             return;
         }
-        allFunctionMap = new HashMap<>();
         for (MyLogFunction parseFunction : parseFunctions) {
             if (StringUtils.isEmpty(parseFunction.getName())) {
                 continue;
