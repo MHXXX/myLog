@@ -21,7 +21,7 @@ public class MyLogFunctionFactory {
             return;
         }
         for (MyLogFunction parseFunction : parseFunctions) {
-            if (StringUtils.isEmpty(parseFunction.getName())) {
+            if (StringUtils.hasText(parseFunction.getName())) {
                 continue;
             }
             allFunctionMap.put(parseFunction.getName(), parseFunction);

@@ -22,8 +22,14 @@ public @interface MyLog {
      */
     String failed() default "";
 
+    /**
+     * 分类
+     */
     String category() default "";
 
+    /**
+     * 细节信息
+     */
     String detail() default "";
 
     String user() default "";

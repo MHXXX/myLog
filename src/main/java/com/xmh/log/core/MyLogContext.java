@@ -1,8 +1,7 @@
 package com.xmh.log.core;
 
-import sun.reflect.Reflection;
-
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,6 +17,10 @@ public class MyLogContext {
     private static final ThreadLocal<LinkedHashMap<String, Map<String, Object>>> THREAD_LOCAL = ThreadLocal.withInitial(LinkedHashMap::new);
 
 
+    private MyLogContext() {
+
+    }
+
     public static void put(String key, Object value) {
         LinkedHashMap<String, Map<String, Object>> map = THREAD_LOCAL.get();
         String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
@@ -27,7 +30,6 @@ public class MyLogContext {
     }
 
     public static Map<String, Object> getVariables() {
-        LinkedHashMap<String, Map<String, Object>> map = THREAD_LOCAL.get();
         return removeTail();
     }
 
@@ -42,8 +44,13 @@ public class MyLogContext {
                 return entry.getValue();
             }
 
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+        return Collections.emptyMap();
+    }
+
+    public static void clear() {
+        THREAD_LOCAL.remove();
     }
 }

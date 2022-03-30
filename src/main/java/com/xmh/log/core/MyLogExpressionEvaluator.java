@@ -1,6 +1,5 @@
 package com.xmh.log.core;
 
-import com.xmh.log.function.MyLogFunctionService;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.context.expression.CachedExpressionEvaluator;
@@ -34,11 +33,6 @@ public class MyLogExpressionEvaluator extends CachedExpressionEvaluator {
 
     private Method getTargetMethod(Class<?> targetClass, Method method) {
         AnnotatedElementKey methodKey = new AnnotatedElementKey(method, targetClass);
-        Method targetMethod = this.targetMethodCache.get(methodKey);
-        if (targetMethod == null) {
-            targetMethod = AopUtils.getMostSpecificMethod(method, targetClass);
-            this.targetMethodCache.put(methodKey, targetMethod);
-        }
-        return targetMethod;
+        return targetMethodCache.computeIfAbsent(methodKey, key -> AopUtils.getMostSpecificMethod(method, targetClass));
     }
 }

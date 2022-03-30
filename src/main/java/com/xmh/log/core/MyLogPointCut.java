@@ -2,7 +2,6 @@ package com.xmh.log.core;
 
 import org.springframework.aop.support.StaticMethodMatcherPointcut;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
 import java.util.Set;
