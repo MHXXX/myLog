@@ -23,13 +23,20 @@ public class MyLogParser {
     private static final MyLogExpressionEvaluator EVALUATOR = new MyLogExpressionEvaluator();
     private MyLogFunctionService myLogFunctionService;
 
-    public LogData parseExpression(MyLog myLog, Class<?> targetClass, Method method, Object[] args, Object ret, String errorMsg) {
-        EvaluationContext evaluationContext = EVALUATOR.createEvaluationContext(targetClass, method, args, ret, errorMsg);
+    public LogData parseExpression(MyLog myLog, Class<?> targetClass, Method method, Object[] args, Object ret, Throwable throwable) {
+        EvaluationContext evaluationContext = EVALUATOR.createEvaluationContext(targetClass, method, args, ret, throwable == null ? "" : throwable.getMessage());
         AnnotatedElementKey annotatedElementKey = new AnnotatedElementKey(method, targetClass);
-        String success = StringUtils.hasText(myLog.success()) ? EVALUATOR.parseExpression(myLog.success(), annotatedElementKey, evaluationContext) : null;
+        String success = StringUtils.hasText(myLog.value()) ? EVALUATOR.parseExpression(myLog.value(), annotatedElementKey, evaluationContext) : null;
         String failed = StringUtils.hasText(myLog.failed()) ? EVALUATOR.parseExpression(myLog.failed(), annotatedElementKey, evaluationContext) : null;
-        return new LogData().setSuccess(errorMsg == null).setRecord(success).setFail(failed).setOperator(null).setTimestamp(System.currentTimeMillis());
+        return new LogData()
+                .setSuccess(throwable == null)
+                .setLog(success)
+                .setFail(failed)
+                .setOperator(null)
+                .setThrowable(throwable)
+                .setResult(ret)
+                .setMyLog(myLog)
+                .setTimestamp(System.currentTimeMillis());
     }
-
 
 }

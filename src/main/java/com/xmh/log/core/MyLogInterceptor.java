@@ -66,7 +66,7 @@ public class MyLogInterceptor implements MethodInterceptor {
 
     private void records(MyLog myLog, Class<?> targetClass, Method method, Object[] args, Object retObj, Throwable throwable) {
         try {
-            LogData logData = logParser.parseExpression(myLog, targetClass, method, args, retObj, throwable == null ? null : throwable.getMessage());
+            LogData logData = logParser.parseExpression(myLog, targetClass, method, args, retObj, throwable);
             logRecordService.record(logData);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

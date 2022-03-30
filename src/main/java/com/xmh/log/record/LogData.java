@@ -1,5 +1,6 @@
 package com.xmh.log.record;
 
+import com.xmh.log.core.MyLog;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,12 +17,15 @@ import lombok.experimental.Accessors;
 public class LogData {
 
     private boolean success;
-    private String record;
+    private String log;
     private String fail;
     private String operator;
     private Long timestamp;
+    private Throwable throwable;
+    private Object result;
+    private MyLog myLog;
 
     public String getResult() {
-        return success ? record : fail;
+        return success ? log : fail;
     }
 }

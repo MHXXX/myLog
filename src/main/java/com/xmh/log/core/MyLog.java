@@ -12,8 +12,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MyLog {
 
-    String success();
+    /**
+     * 正常情况下的日志记录 SpEL 表达式
+     */
+    String value();
 
+    /**
+     * 异常情况下的日志记录 SpEL 表达式
+     */
     String failed() default "";
 
     String category() default "";
