@@ -1,7 +1,7 @@
 package com.xmh.log.function;
 
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +21,7 @@ public class MyLogFunctionFactory {
             return;
         }
         for (MyLogFunction parseFunction : parseFunctions) {
-            if (StringUtils.hasText(parseFunction.getName())) {
+            if (ObjectUtils.isEmpty(parseFunction.getName())) {
                 continue;
             }
             allFunctionMap.put(parseFunction.getName(), parseFunction);
